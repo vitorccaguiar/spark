@@ -38,6 +38,23 @@ import spark.route.ServletRoutes;
 import spark.staticfiles.StaticFilesConfiguration;
 import spark.utils.StringUtils;
 
+public class FakeSparkFilter extends SparkFilter {
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+        ServletFlag.runFromServlet();
+
+        applications = getApplications(filterConfig);
+
+        for (SparkApplication application : applications) {
+            application.init();
+        }
+
+        filterPath = FilterTools.getFilterPath(filterConfig);
+
+        matcherFilter = new FakeMatchFilter();
+    }
+}
+
 /**
  * Filter that can be configured to be used in a web.xml file.
  * Needs the init parameter 'applicationClass' set to the application class where
