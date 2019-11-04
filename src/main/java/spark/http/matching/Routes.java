@@ -22,12 +22,42 @@ import spark.RouteImpl;
 import spark.route.HttpMethod;
 import spark.routematch.RouteMatch;
 
+public interface RouteContextParam {
+     
+    public void body();
+    public void routeMatcher();
+    public void httpMethod();
+    public void uri();
+    public void acceptType();
+}
+
+public class FakeRouteContext implements RouteContextParam {
+ public void body() {
+ }
+ public void routeMatcher() {
+ }
+ public void httpMethod() {
+ }
+ public void uri() {
+ }
+ public void acceptType() {
+ }
+}
+
+public class RealRouteContext implements RouteContextParam {
+ private RouteContext context;
+ public ServletParameterSource(RouteContext context) {
+    this.context = context;
+ } 
+
+}
+
 /**
  * Created by Per Wendel on 2016-01-28.
  */
 final class Routes {
 
-    static void execute(RouteContext context) throws Exception {
+    static void execute(RouteContextParam context) throws Exception {
 
         Object content = context.body().get();
 
